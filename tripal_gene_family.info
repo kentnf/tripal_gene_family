@@ -1,0 +1,15 @@
+name = Tripal Gene Family
+description = A module for gene family
+core = 7.x
+version = 7.x-0.1-dev
+project = tripal_gene_family
+package = Tripal Extensions
+configure = admin/tripal/extension/tripal_gene_family
+
+dependencies[] = tripal_core
+dependencies[] = tripal_views
+dependencies[] = tripal_db
+dependencies[] = tripal_cv
+dependencies[] = tripal_analysis
+dependencies[] = tripal_feature
+dependencies[] = tripal_organism

@@ -1,0 +1,149 @@
+<?php
+
+
+require_once 'includes/tripal_gene_family_api.inc';
+
+require_once 'includes/tripal_gene_family_add.inc';
+require_once 'includes/tripal_gene_family_delete.inc';
+require_once 'includes/tripal_gene_family_update.inc';
+require_once 'includes/tripal_gene_family_load.inc';
+
+//require_once "theme/tripal_rnaseq.theme.inc";
+
+/**
+ * Implements hook_menu().
+ */
+function tripal_gene_family_menu() {
+  $items = array();
+  
+  // === main admin pages ===
+  $items['admin/tripal/extension/tripal_gene_family'] = array(
+    'title' => 'Tripal Gene Family',
+    'description' => 'A module for display gene family classification.',
+    'access arguments' => array('administer'),
+  );
+
+  // load gene family classification from txt file
+  $items['admin/tripal/extension/tripal_gene_family/load'] = array(
+    'title' => 'Load',
+    'description' => 'Load gene faimly classification into chado database.',
+    'access arguments' => array('administer'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('tripal_gene_family_load',),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 3,
+  );
+
+  // manually add gene family classification
+  $items['admin/tripal/extension/tripal_gene_family/Add'] = array(
+    'title' => 'Add',
+    'description' => 'Add gene faimly classification into chado database.',
+    'access arguments' => array('administer'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('tripal_gene_family_add',),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 4,
+  );
+
+  // update gene family classification
+  $items['admin/tripal/extension/tripal_gene_family/update'] = array(
+    'title' => 'Update',
+    'description' => 'Update gene faimly classification.',
+    'access arguments' => array('administer'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('tripal_gene_family_update',),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 4,
+  );
+
+  // delete gene family classification
+  $items['admin/tripal/extension/tripal_gene_family/delete'] = array(
+    'title' => 'Delete',
+    'description' => 'Delete gene faimly classification from chado database.',
+    'access arguments' => array('administer'),
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('tripal_gene_family_delete',),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 5,
+  );
+
+  // === help === 
+  $items['admin/tripal/extension/tripal_gene_family/help'] = array(
+    'title' => 'Help',
+    'description' => 'Document for how to use Tripal Gene Family.',
+    'access arguments' => array('administer'),
+    'page callback' => 'theme',
+    'page arguments' => array('tripal_gene_family_help'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 10,
+  );
+
+
+  // === display family list ===
+
+
+
+
+  $items['family/overview'] = array(
+    'title' => 'Overview Family',
+    'access arguments' => array('access content'),
+    'page callback' => 'theme',
+    'page arguments' => array('tripal_gene_family_overview',),
+    'type' => MENU_NORMAL_ITEM,
+    'weight' => 5,
+  ); 
+  // === display feature list ===
+
+
+  $items['family/list/%/%'] = array(
+    'title' => 'Gene List',
+    'page callback' => 'tripal_gene_family_show_gene_list',
+    'page arguments' => array(2, 3),
+    'access arguments' => array('access content'),
+    'type' => MENU_CALLBACK,
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_theme().
+ */
+function tripal_gene_family_theme() {
+  $items = array();
+  $path = drupal_get_path('module', 'tripal_gene_family');
+
+  $items['tripal_gene_family_help'] = array(
+    'template' => 'tripal_gene_family_help',
+    'path' => "$path/theme",
+  );
+
+  $items['tripal_gene_family_overview'] = array(
+    'template' => 'tripal_gene_family_overview',
+    'path' => "$path/theme",
+  );
+
+  $items['tripal_gene_family_list'] = array(
+    'template' => 'tripal_gene_family_list',
+    'path' => "$path/theme",
+  );  
+
+  return $items;
+}
+
+function tripal_gene_family_help($path, $arg) {
+  if ($path == 'admin/help#tripal_gene_family') {
+    return theme('tripal_gene_family_help');
+  }  
+}
+
+/**
+ * just pass parameter to theme
+ */
+function tripal_gene_family_show_gene_list($organism_id, $family_id) {
+  return theme('tripal_gene_family_list', array('organism_id' => $organism_id, 'family_id' => $family_id)); 
+}
+
+
+
+
