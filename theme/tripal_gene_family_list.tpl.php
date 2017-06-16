@@ -40,5 +40,9 @@ if (sizeof($results) > 0) {
   );
 
   $table_html = theme('table', $variables);
+
+
+  print '<div class="row"> <div class="col-md-8 col-md-offset-2">';
   print $table_html;
+  print '</div> </div>';
 } 

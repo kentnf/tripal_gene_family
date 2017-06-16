@@ -6,8 +6,10 @@ $family_stru = tripal_gene_family_get_structure();
 // output html 
 $num_col = 6;
 
-foreach ($family_stru as $family_top) {
+print '<div class="row"> <div class="col-md-8 col-md-offset-2">';
 
+foreach ($family_stru as $family_top) {
+  
   print '<h4>'.$family_top->family_name.'</h4>'; 
   
   $num = 0;
@@ -41,7 +43,8 @@ foreach ($family_stru as $family_top) {
     $table_html .= "<td></td>";
   }
   $table_html .= "</tr></table>";
- 
+
   print $table_html;
 }
 
+print '</div> </div>';
